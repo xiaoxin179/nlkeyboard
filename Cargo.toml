@@ -1,0 +1,21 @@
+[package]
+name = "nlkeyboard"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+directories = "6.0"
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "2.0"
+time = { version = "0.3", features = ["formatting", "local-offset", "macros"] }
+toml = "0.9"
+tracing = "0.1"
+tracing-appender = "0.2"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "time"] }
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.56"
+
+[dev-dependencies]
+tempfile = "3.23"
