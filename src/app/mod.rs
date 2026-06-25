@@ -23,12 +23,10 @@ pub fn run() -> anyhow::Result<()> {
     let config_store = ConfigStore::new(paths.config_file.clone());
     let config = config_store.load_or_create_default()?;
     info!(hotkey = %config.app.hotkey, "configuration loaded");
-    ui::startup_notice::show(&paths, &config).context("failed to show startup notice")?;
 
-    let mut session = session::AppSession::new(paths, config_store, config);
-    session.handle_command(commands::AppCommand::Start)?;
-    session.handle_command(commands::AppCommand::Stop)?;
-    session.handle_command(commands::AppCommand::Exit)?;
+    let _session = session::AppSession::new(paths.clone(), config_store, config.clone());
+    info!("starting tray application");
+    ui::tray::TrayApplication::run(&paths, &config).context("failed to run tray application")?;
 
     info!("nlkeyboard bootstrap finished");
     Ok(())
