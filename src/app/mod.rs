@@ -9,6 +9,7 @@ use crate::{
     config::{AppConfig, ConfigStore},
     logging,
     platform::AppPaths,
+    ui,
 };
 
 pub fn run() -> anyhow::Result<()> {
@@ -22,6 +23,7 @@ pub fn run() -> anyhow::Result<()> {
     let config_store = ConfigStore::new(paths.config_file.clone());
     let config = config_store.load_or_create_default()?;
     info!(hotkey = %config.app.hotkey, "configuration loaded");
+    ui::startup_notice::show(&paths, &config).context("failed to show startup notice")?;
 
     let mut session = session::AppSession::new(paths, config_store, config);
     session.handle_command(commands::AppCommand::Start)?;
